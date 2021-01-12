@@ -88,11 +88,16 @@
           1. IfAbruptRejectPromise(_specifierString_, _promiseCapability_).
           1. <ins>Let _argRef_ be the result of evaluating the second |AssignmentExpression|.</ins>
           1. <ins>Let _arg_ be ? GetValue(_argRef_).</ins>
-          1. <ins>If _arg_ is *undefined*, let _assertions_ be an empty List.</ins>
-          1. <ins>Otherwise,</ins>
-            1. <ins>Let _supportedAssertions_ ! HostGetSupportedImportAssertions().</ins>
+          1. <ins>Let _assertions_ be a new empty List.</ins>
+          1. <ins>If _arg_ is not *undefined*,</ins>
+            1. <ins>If Type(_arg_) is not Object, then</ins>
+              1. <ins>Perform ! Call(_promiseCapability_.[[Reject]], *undefined*, &laquo; a newly created *TypeError* object &raquo;).</ins>
+              1. <ins>Return _promiseCapability_.[[Promise]].</ins>
             1. <ins>Let _assertionsObj_ be ? Get(_arg_, *"assert"*).</ins>
-            1. <ins>Let _assertions_ be a new empty List.</ins>
+            1. <ins>If Type(_assertionsObj_) is not Object, then</ins>
+              1. <ins>Perform ! Call(_promiseCapability_.[[Reject]], *undefined*, &laquo; a newly created *TypeError* object &raquo;).</ins>
+              1. <ins>Return _promiseCapability_.[[Promise]].</ins>
+            1. <ins>Let _supportedAssertions_ ! HostGetSupportedImportAssertions().</ins>
             1. <ins>Let _keys_ be EnumerableOwnPropertyNames(_assertionsObj_, ~key~).</ins>
             1. <ins>IfAbruptRejectPromise(_keys_, _promiseCapability_).</ins>
             1. <ins>For each String _key_ of _keys_, if _key_ is an entry of _supportedAssertions_,</ins>
